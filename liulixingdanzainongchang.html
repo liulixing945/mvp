@@ -1,0 +1,831 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蛋仔疯狂农场果实计算器（勾选添加预设版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4ade80',
+                        secondary: '#fbbf24',
+                        accent: '#8b5cf6',
+                        background: '#f0fdf4',
+                        'price-high': '#ef4444',
+                        'price-medium': '#f97316',
+                        'price-low': '#22c55e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 transition-colors duration-300;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition-colors duration-300;
+            }
+            .btn-accent {
+                @apply bg-accent text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors duration-300;
+            }
+            .btn-preset {
+                @apply bg-blue-100 text-blue-800 px-3 py-2 rounded-lg hover:bg-blue-200 transition-colors duration-300 text-sm;
+            }
+            .btn-save-preset {
+                @apply bg-purple-100 text-purple-800 px-2 py-1 rounded-lg hover:bg-purple-200 transition-colors duration-300 text-xs;
+            }
+            .tooltip {
+                @apply invisible absolute bg-gray-800 text-white text-xs rounded py-1 px-2 -mt-10 opacity-0 transition-opacity duration-300;
+            }
+            .has-tooltip:hover .tooltip {
+                @apply visible opacity-100 z-50;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 版本号区域 -->
+        <div class="text-left mb-4 text-gray-500 font-medium">版本1.0</div>
+        
+        <!-- 标题区域 -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-green-700 mb-2 text-shadow">蛋仔疯狂农场果实计算器</h1>
+            <p class="text-gray-600">本计算器由豆包和TRAE创作免费使用，切勿用于商业使用，by抖音:蛋仔派对栖山十七，创作不易请多多关注</p>
+            <p class="text-red-600 font-bold text-lg">因为数值特殊有一点小误差</p>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <div class="grid grid-cols-1 gap-6">
+            <!-- 作物价格计算器 -->
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <h2 class="text-2xl font-bold text-green-700 mb-4 flex items-center">
+                    <i class="fa fa-calculator mr-2"></i>作物价格计算器
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 左侧输入 -->
+                    <div class="space-y-4">
+                        <!-- 作物选择（新增波斯菊） -->
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">选择作物</label>
+                            <select id="cropSelect" class="w-full p-2 border border-gray-300 rounded-lg input-focus">
+                                <option value="魔鬼朝天椒">魔鬼朝天椒</option>
+                                <option value="蟠桃">蟠桃</option>
+                                <option value="仙人掌象">仙人掌象</option>
+                                <option value="惊奇蘑">惊奇蘑</option>
+                                <option value="葡萄">葡萄</option>
+                                <option value="大王菊">大王菊</option>
+                                <option value="松果">松果</option>
+                                <option value="向日葵">向日葵</option>
+                                <option value="草莓">草莓</option>
+                                <option value="猴桃">猴桃</option>
+                                <option value="榴莲">榴莲</option>
+                                <option value="荔枝">荔枝</option>
+                                <option value="苹果">苹果</option>
+                                <option value="香蕉">香蕉</option>
+                                <option value="椰子">椰子</option>
+                                <option value="南瓜">南瓜</option>
+                                <option value="石榴">石榴</option>
+                                <option value="车厘子">车厘子</option>
+                                <option value="玉米">玉米</option>
+                                <option value="西瓜">西瓜</option>
+                                <option value="梨">梨</option>
+                                <option value="白菜">白菜</option>
+                                <option value="棉花">棉花</option>
+                                <option value="橘子">橘子</option>
+                                <option value="牵牛花">牵牛花</option>
+                                <option value="黄瓜">黄瓜</option>
+                                <option value="大豆">大豆</option>
+                                <option value="竹子">竹子</option>
+                                <option value="波斯菊">波斯菊</option>
+                                <option value="番茄">番茄</option>
+                                <option value="香菇">香菇</option>
+                                <option value="土豆">土豆</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 重量输入 -->
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">重量 (kg)</label>
+                            <div class="flex items-center">
+                                <input type="range" id="weightSlider" min="0.01" max="100" step="0.01" value="10.00" class="w-full mr-4">
+                                <div class="flex items-center">
+                                    <input type="number" id="weightInput" min="0.01" max="100" step="0.01" value="10.00" class="w-[80px] text-right px-2 py-1 border border-gray-300 rounded input-focus">
+                                    <span class="ml-1">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 基础突变选择 -->
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">基础突变</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="mutation-btn bg-gray-200 p-2 rounded-lg text-center hover:bg-gray-300 transition-colors" data-type="normal" data-value="1">普通 (×1)</button>
+                                <button class="mutation-btn bg-gray-400 text-white p-2 rounded-lg text-center hover:bg-gray-500 transition-colors" data-type="silver" data-value="3">银色 (×3)</button>
+                                <button class="mutation-btn bg-yellow-400 p-2 rounded-lg text-center hover:bg-yellow-500 transition-colors" data-type="gold" data-value="10">金色 (×10)</button>
+                                <button class="mutation-btn bg-blue-200 p-2 rounded-lg text-center hover:bg-blue-300 transition-colors" data-type="crystal" data-value="20">水晶 (×20)</button>
+                                <button class="mutation-btn bg-purple-300 p-2 rounded-lg text-center hover:bg-purple-400 transition-colors" data-type="streamer" data-value="30">流光 (×30)</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 特殊突变选择 -->
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">特殊突变</label>
+                            <div id="specialMutationContainer" class="grid grid-cols-2 gap-2">
+                                <!-- 动态生成特殊突变选项 -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧输入和结果 -->
+                    <div class="space-y-4">
+                        <!-- 天气选择 -->
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium flex items-center justify-between">
+                                <span>天气选择</span>
+                                <div class="flex gap-2">
+                                    <button id="preset1Btn" class="btn-preset">预设1 <span id="preset1Name">(高加成)</span></button>
+                                    <button id="preset2Btn" class="btn-preset">预设2 <span id="preset2Name">(中加成)</span></button>
+                                    <button id="preset3Btn" class="btn-preset">预设3 <span id="preset3Name">(低加成)</span></button>
+                                    <button id="clearWeatherBtn" class="btn-preset bg-red-100 text-red-800 hover:bg-red-200">清空</button>
+                                </div>
+                            </label>
+                            
+                            <!-- 预设保存面板（勾选后保存） -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3 border border-gray-200 flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700">勾选天气后 → 保存到预设</span>
+                                <div class="flex gap-2">
+                                    <button id="saveToPreset1" class="btn-save-preset">保存到预设1</button>
+                                    <button id="saveToPreset2" class="btn-save-preset">保存到预设2</button>
+                                    <button id="saveToPreset3" class="btn-save-preset">保存到预设3</button>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-颤栗" class="weather-checkbox mr-2" data-value="1">
+                                    <label for="weather-颤栗">颤栗 (+1)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-潮湿" class="weather-checkbox mr-2" data-value="1">
+                                    <label for="weather-潮湿">潮湿 (+1)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-覆雪" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-覆雪">覆雪 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-迷雾" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-迷雾">迷雾 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-灼热" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-灼热">灼热 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-生机" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-生机">生机 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-沙尘" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-沙尘">沙尘 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-结霜" class="weather-checkbox mr-2" data-value="2">
+                                    <label for="weather-结霜">结霜 (+2)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-落雷" class="weather-checkbox mr-2" data-value="3">
+                                    <label for="weather-落雷">落雷 (+3)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-血月" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-血月">血月 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-幽魂" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-幽魂">幽魂 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-惊魂夜" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-惊魂夜">惊魂夜 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-彩虹" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-彩虹">彩虹 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-荧光" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-荧光">荧光 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-极光" class="weather-checkbox mr-2" data-value="5">
+                                    <label for="weather-极光">极光 (+5)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-冰冻" class="weather-checkbox mr-2" data-value="4">
+                                    <label for="weather-冰冻">冰冻 (潮湿+结霜, +4)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-陶化" class="weather-checkbox mr-2" data-value="4">
+                                    <label for="weather-陶化">陶化 (潮湿+沙尘, +4)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-瓷化" class="weather-checkbox mr-2" data-value="8">
+                                    <label for="weather-瓷化">瓷化 (陶化+灼热, +8)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-星环" class="weather-checkbox mr-2" data-value="10">
+                                    <label for="weather-星环">星环 (+10)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-亮晶晶" class="weather-checkbox mr-2" data-value="10">
+                                    <label for="weather-亮晶晶">亮晶晶 (+10)</label>
+                                </div>
+                                <div class="weather-item flex items-center">
+                                    <input type="checkbox" id="weather-霓虹" class="weather-checkbox mr-2" data-value="18">
+                                    <label for="weather-霓虹">霓虹 (+18)</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算结果 -->
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="text-lg font-semibold text-green-700 mb-2">计算结果</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">种族值:</span>
+                                    <span id="raceValue" class="font-medium">25</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">重量系数:</span>
+                                    <span id="weightFactor" class="font-medium">10.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">突变值:</span>
+                                    <span id="mutationValue" class="font-medium">1.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">天气加成:</span>
+                                    <span id="weatherBonus" class="font-medium">1.00</span>
+                                </div>
+                                <hr class="my-2 border-green-200">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-800 font-bold">最终价格:</span>
+                                    <span id="finalPrice" class="text-2xl font-bold text-price-high">0.03万</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 计算规则说明 -->
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <h3 class="text-lg font-semibold text-green-700 mb-2 flex items-center">
+                                <i class="fa fa-info-circle mr-2"></i>价格计算规则
+                            </h3>
+                            <p class="text-center font-medium mb-2">价格计算公式:</p>
+                            <p class="text-center text-lg mb-4">价格 = (种族值 × 重量<sup>1.5</sup>) × 总突变值 × (1 + Σ天气值)</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <p><span class="font-medium">种族值:</span> 每种作物的基础价值</p>
+                                <p><span class="font-medium">重量:</span> 作物成熟时的重量，影响为重量的1.5次方</p>
+                                <p><span class="font-medium">总突变值:</span> 基础突变 × 特殊突变的总加成倍数</p>
+                                <p><span class="font-medium">天气值:</span> 当前天气条件的总和，影响为1+天气值总和</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 果实最大值信息 -->
+        <div class="bg-white rounded-xl shadow-md p-4 card-hover mb-8">
+            <h2 class="text-xl font-bold text-green-700 mb-3 flex items-center">
+                <i class="fa fa-table mr-2"></i>果实最大值单位kg
+            </h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-300 p-1 text-left">作物</th>
+                            <th class="border border-gray-300 p-1 text-left">变异</th>
+                            <th class="border border-gray-300 p-1 text-left">单位kg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 p-1">波斯菊</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">34.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">玉米</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">42</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">猕猴桃</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">14.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">松果</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">17.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">番茄</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">土豆</td>
+                            <td class="border border-gray-300 p-1">薯片</td>
+                            <td class="border border-gray-300 p-1">12</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">香菇</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">3.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">黄瓜</td>
+                            <td class="border border-gray-300 p-1">黄瓜蛇</td>
+                            <td class="border border-gray-300 p-1">14.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">竹子</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">140</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">大豆</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">3.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">梨子</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">14.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">西瓜</td>
+                            <td class="border border-gray-300 p-1">方形</td>
+                            <td class="border border-gray-300 p-1">170</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">牵牛花</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">5.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">橘子</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">14.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">白菜</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">棉花</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">5.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">车厘子</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">南瓜</td>
+                            <td class="border border-gray-300 p-1">万圣夜</td>
+                            <td class="border border-gray-300 p-1">220</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">椰子</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">42</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">苹果</td>
+                            <td class="border border-gray-300 p-1">糖葫芦</td>
+                            <td class="border border-gray-300 p-1">40</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">石榴</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">21.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">香蕉</td>
+                            <td class="border border-gray-300 p-1">香蕉猴</td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">荔枝</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">24.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">草莓</td>
+                            <td class="border border-gray-300 p-1">连体</td>
+                            <td class="border border-gray-300 p-1">9</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">榴莲</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">63.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">大王菊</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">葡萄</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">向日葵</td>
+                            <td class="border border-gray-300 p-1">笑日葵</td>
+                            <td class="border border-gray-300 p-1">52</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">蟠桃</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">21</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">惊奇菇</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">仙人掌大象</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">34.5</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-1">魔鬼朝天椒</td>
+                            <td class="border border-gray-300 p-1"></td>
+                            <td class="border border-gray-300 p-1">10.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>© 2025 蛋仔疯狂农场果实计算器 | 勾选添加预设版 | 仅供游戏参考</p>
+        </footer>
+    </div>
+
+    <script>
+        // 数据定义（波斯菊种族值改为精确值43.46）
+        const cropData = {
+            '土豆': 25,
+            '草莓': 8700,
+            '黄瓜': 1200,
+            '向日葵': 370,
+            '西瓜': 5000,
+            '苹果': 1500,
+            '香蕉': 2000,
+            '猴桃': 2150,
+            '蟠桃': 9000,
+            '大王菊': 24875,
+            '榴莲': 200,
+            '葡萄': 25000,
+            '荔枝': 800,
+            '惊奇蘑': 49698,
+            '仙人掌象': 9523,
+            '松果': 4600,
+            '车厘子': 1670,
+            '南瓜': 13,
+            '玉米': 100,
+            '波斯菊': 43.46,
+            '梨': 488,
+            '石榴': 527,
+            '棉花': 2526,
+            '椰子': 145,
+            '番茄': 66,
+            '大豆': 2586,
+            '牵牛花': 2136,
+            '白菜': 582,
+            '橘子': 539,
+            '魔鬼朝天椒': 33113,
+            '香菇': 700,
+            '竹子': 12
+        };
+        
+        const specialMutationData = {
+            '土豆': { '薯片': 1.5 },
+            '草莓': { '连体': 1.5 },
+            '黄瓜': { '黄瓜蛇': 2 },
+            '向日葵': { '笑日葵': 10 },
+            '西瓜': { '方形': 1.5 },
+            '苹果': { '糖葫芦': 1.5 },
+            '香蕉': { '香蕉猴': 2 },
+            '猴桃': { '巨型': 1.5, '多果': 2 },
+            '蟠桃': { '双生': 1.5, '金纹': 2 },
+            '大王菊': { '重瓣': 1.5, '异色': 2 },
+            '榴莲': { '多刺': 1.5, '浓香': 2 },
+            '葡萄': { '无籽': 1.5, '串状': 2 },
+            '荔枝': { '核小': 1.5, '蜜甜': 2 },
+            '惊奇蘑': { '发光': 1.5, '巨型': 2 },
+            '仙人掌象': { '多臂': 1.5, '硬刺': 2 },
+            '松果': { '大颗': 1.5, '油亮': 2 },
+            '车厘子': {},
+            '南瓜': { '万圣夜': 2 },
+            '玉米': {},
+            '波斯菊': {},
+            '梨': {},
+            '石榴': {},
+            '棉花': {},
+            '椰子': {},
+            '番茄': {},
+            '大豆': {},
+            '牵牛花': {},
+            '白菜': {},
+            '橘子': {},
+            '魔鬼朝天椒': {},
+            '香菇': {},
+            '竹子': {}
+        };
+        
+        // 初始化天气预设
+        let weatherPresets = {
+            preset1: ['霓虹', '星环', '亮晶晶'],
+            preset2: ['血月', '彩虹', '极光'],
+            preset3: ['落雷', '灼热', '生机']
+        };
+        
+        // 优化后的单位格式化函数（减少偏差）
+        function formatNumber(num) {
+            if (num >= 100000000) { 
+                return (num / 100000000).toFixed(2) + '亿';
+            } else if (num >= 10000) { 
+                return (num / 10000).toFixed(2) + '万';
+            } else { 
+                return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+            }
+        }
+        
+        // DOM元素获取
+        const cropSelect = document.getElementById('cropSelect');
+        const weightSlider = document.getElementById('weightSlider');
+        const weightInput = document.getElementById('weightInput');
+        const mutationBtns = document.querySelectorAll('.mutation-btn');
+        const weatherCheckboxes = document.querySelectorAll('.weather-checkbox');
+        const specialMutationContainer = document.getElementById('specialMutationContainer');
+        
+        const raceValueEl = document.getElementById('raceValue');
+        const weightFactorEl = document.getElementById('weightFactor');
+        const mutationValueEl = document.getElementById('mutationValue');
+        const weatherBonusEl = document.getElementById('weatherBonus');
+        const finalPriceEl = document.getElementById('finalPrice');
+        
+        const preset1Btn = document.getElementById('preset1Btn');
+        const preset2Btn = document.getElementById('preset2Btn');
+        const preset3Btn = document.getElementById('preset3Btn');
+        const clearWeatherBtn = document.getElementById('clearWeatherBtn');
+        
+        const saveToPreset1 = document.getElementById('saveToPreset1');
+        const saveToPreset2 = document.getElementById('saveToPreset2');
+        const saveToPreset3 = document.getElementById('saveToPreset3');
+        
+        const preset1Name = document.getElementById('preset1Name');
+        const preset2Name = document.getElementById('preset2Name');
+        const preset3Name = document.getElementById('preset3Name');
+        
+        // 状态变量
+        let selectedMutationValue = 1;
+        let selectedSpecialMutationValue = 1;
+        
+        // 初始化函数
+        function init() {
+            // 作物选择事件
+            cropSelect.addEventListener('change', () => {
+                updateSpecialMutations();
+                calculatePrice();
+            });
+            
+            // 重量滑块与输入框联动
+            weightSlider.addEventListener('input', () => {
+                const value = parseFloat(weightSlider.value);
+                const roundedValue = Math.round(value * 100) / 100; // 确保是0.01的倍数
+                const formattedValue = roundedValue.toFixed(2);
+                weightInput.value = formattedValue;
+                calculatePrice();
+            });
+            
+            weightInput.addEventListener('input', (e) => {
+                let value = parseFloat(e.target.value);
+                if (isNaN(value)) value = 10.00;
+                if (value < 0.01) value = 0.01;
+                if (value > 100) value = 100;
+                const roundedValue = Math.round(value * 100) / 100; // 确保是0.01的倍数
+                const formattedValue = roundedValue.toFixed(2);
+                
+                e.target.value = formattedValue;
+                weightSlider.value = formattedValue;
+                calculatePrice();
+            });
+            
+            // 基础突变按钮事件
+            mutationBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    mutationBtns.forEach(b => b.classList.remove('ring-2', 'ring-blue-500'));
+                    btn.classList.add('ring-2', 'ring-blue-500');
+                    selectedMutationValue = parseFloat(btn.dataset.value);
+                    calculatePrice();
+                });
+            });
+            
+            // 天气复选框事件
+            weatherCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    calculatePrice();
+                });
+            });
+            
+            // 天气预设按钮事件
+            preset1Btn.addEventListener('click', () => applyWeatherPreset('preset1'));
+            preset2Btn.addEventListener('click', () => applyWeatherPreset('preset2'));
+            preset3Btn.addEventListener('click', () => applyWeatherPreset('preset3'));
+            clearWeatherBtn.addEventListener('click', clearAllWeather);
+            
+            // 保存到预设按钮事件
+            saveToPreset1.addEventListener('click', () => saveCurrentWeatherToPreset('preset1'));
+            saveToPreset2.addEventListener('click', () => saveCurrentWeatherToPreset('preset2'));
+            saveToPreset3.addEventListener('click', () => saveCurrentWeatherToPreset('preset3'));
+            
+            // 初始化特殊突变选项
+            updateSpecialMutations();
+            
+            // 默认选中第一个基础突变按钮
+            if (mutationBtns.length > 0) mutationBtns[0].click();
+            
+            // 初始计算价格
+            calculatePrice();
+            
+            // 更新预设名称显示
+            updatePresetNames();
+        }
+        
+        // 保存当前勾选的天气到指定预设
+        function saveCurrentWeatherToPreset(presetKey) {
+            const selectedWeathers = [];
+            weatherCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const weatherName = checkbox.id.replace('weather-', '');
+                    selectedWeathers.push(weatherName);
+                }
+            });
+            
+            if (selectedWeathers.length === 0) {
+                alert('请先勾选至少一个天气！');
+                return;
+            }
+            
+            weatherPresets[presetKey] = selectedWeathers;
+            updatePresetNames();
+            alert(`已将当前勾选的天气保存到${presetKey.replace('preset', '预设')}！`);
+        }
+        
+        // 更新预设名称显示
+        function updatePresetNames() {
+            preset1Name.textContent = `(${weatherPresets.preset1.join('、')})`;
+            preset2Name.textContent = `(${weatherPresets.preset2.join('、')})`;
+            preset3Name.textContent = `(${weatherPresets.preset3.join('、')})`;
+        }
+        
+        // 应用天气预设
+        function applyWeatherPreset(presetKey) {
+            clearAllWeather();
+            const presetWeathers = weatherPresets[presetKey];
+            
+            presetWeathers.forEach(weatherName => {
+                const checkbox = document.getElementById(`weather-${weatherName}`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                } else {
+                    alert(`未找到天气「${weatherName}」，请检查预设配置！`);
+                }
+            });
+            
+            calculatePrice();
+        }
+        
+        // 清空所有天气选择
+        function clearAllWeather() {
+            weatherCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            calculatePrice();
+        }
+        
+        // 更新特殊突变选项
+        function updateSpecialMutations() {
+            const selectedCrop = cropSelect.value;
+            specialMutationContainer.innerHTML = '';
+            
+            selectedSpecialMutationValue = 1;
+            
+            // 添加"无特殊突变"选项
+            const noBtn = document.createElement('button');
+            noBtn.className = 'special-mutation-btn bg-gray-200 p-2 rounded-lg text-center hover:bg-gray-300 transition-colors ring-2 ring-blue-500';
+            noBtn.dataset.type = 'none';
+            noBtn.dataset.value = '1';
+            noBtn.textContent = '无特殊突变 (×1)';
+            noBtn.addEventListener('click', () => {
+                document.querySelectorAll('.special-mutation-btn').forEach(b => b.classList.remove('ring-2', 'ring-blue-500'));
+                noBtn.classList.add('ring-2', 'ring-blue-500');
+                selectedSpecialMutationValue = 1;
+                calculatePrice();
+            });
+            specialMutationContainer.appendChild(noBtn);
+            
+            // 添加对应作物的特殊突变选项
+            if (specialMutationData[selectedCrop] && Object.keys(specialMutationData[selectedCrop]).length > 0) {
+                const mutations = specialMutationData[selectedCrop];
+                for (const [name, value] of Object.entries(mutations)) {
+                    const btn = document.createElement('button');
+                    btn.className = 'special-mutation-btn bg-gray-200 p-2 rounded-lg text-center hover:bg-gray-300 transition-colors';
+                    btn.dataset.type = name;
+                    btn.dataset.value = value;
+                    btn.textContent = `${name} (×${value})`;
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.special-mutation-btn').forEach(b => b.classList.remove('ring-2', 'ring-blue-500'));
+                        btn.classList.add('ring-2', 'ring-blue-500');
+                        selectedSpecialMutationValue = value;
+                        calculatePrice();
+                    });
+                    specialMutationContainer.appendChild(btn);
+                }
+            }
+        }
+        
+        // 优化后的价格计算函数（去掉Math.round，减少偏差）
+        function calculatePrice() {
+            const selectedCrop = cropSelect.value;
+            const raceValue = cropData[selectedCrop];
+            const weight = parseFloat(weightSlider.value);
+            const weightFactor = Math.pow(weight, 1.5);
+            
+            // 总突变值 = 基础突变 × 特殊突变
+            const totalMutationValue = selectedMutationValue * selectedSpecialMutationValue;
+            
+            // 计算天气总加成
+            let weatherSum = 0;
+            weatherCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) weatherSum += parseFloat(checkbox.dataset.value);
+            });
+            const weatherBonus = 1 + weatherSum;
+            
+            // 关键修改：去掉Math.round，保留高精度原始计算结果
+            const finalPrice = raceValue * weightFactor * totalMutationValue * weatherBonus;
+            
+            // 更新显示
+            raceValueEl.textContent = formatNumber(raceValue);
+            weightFactorEl.textContent = weightFactor.toFixed(2);
+            mutationValueEl.textContent = totalMutationValue.toFixed(2);
+            weatherBonusEl.textContent = weatherBonus.toFixed(2);
+            finalPriceEl.textContent = formatNumber(finalPrice);
+            
+            // 价格颜色分级
+            if (finalPrice >= 1000000) {
+                finalPriceEl.className = 'text-2xl font-bold text-price-high';
+            } else if (finalPrice >= 100000) {
+                finalPriceEl.className = 'text-2xl font-bold text-price-medium';
+            } else {
+                finalPriceEl.className = 'text-2xl font-bold text-price-low';
+            }
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
