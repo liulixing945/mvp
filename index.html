@@ -2,7 +2,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EF</title>
+    <meta name="copyright" content="© 2026 蛋仔疯狂农场果实计算器 | 版权所有">
+    <meta name="author" content="抖音:蛋仔派对栖山十七">
+    <meta name="robots" content="noindex, nofollow">
+    <title>蛋仔疯狂农场果实计算器</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -67,9 +70,9 @@
         
         <!-- 标题区域 -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-green-700 mb-2 text-shadow">蛋仔疯狂农场果实计算器</h1>
-            <p class="text-gray-600">本计算器免费使用，切勿用于商业使用，有问题联系，by抖音:蛋仔派对栖山十七，创作不易请多多关注</p>
-            <p class="text-red-600 font-bold text-lg">因为数值特殊有一点小误差</p>
+            <h1 class="text-4xl font-bold mb-2 text-shadow bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-yellow-500 to-green-500">蛋仔疯狂农场果实计算器</h1>
+            <p class="text-gray-600">本计算器免费使用，切勿用于商业使用，有问题联系，抖音:蛋仔派对栖山十七，创作不易请多多关注😭</p>
+            <p class="text-red-600 font-bold text-lg">数值特殊有一定误差</p>
         </header>
 
         <!-- 主要内容区域 -->
@@ -96,7 +99,7 @@
                                 <option value="松果">松果</option>
                                 <option value="向日葵">向日葵</option>
                                 <option value="草莓">草莓</option>
-                                <option value="猴桃">猴桃</option>
+                                <option value="猕猴桃">猕猴桃</option>
                                 <option value="榴莲">榴莲</option>
                                 <option value="荔枝">荔枝</option>
                                 <option value="苹果">苹果</option>
@@ -126,9 +129,9 @@
                         <div>
                             <label class="block text-gray-700 mb-2 font-medium">重量 (kg)</label>
                             <div class="flex items-center">
-                                <input type="range" id="weightSlider" min="0.01" max="100" step="0.01" value="10.00" class="w-full mr-4">
+                                <input type="range" id="weightSlider" min="0.01" max="230" step="0.1" value="10.0" class="w-full mr-4">
                                 <div class="flex items-center">
-                                    <input type="number" id="weightInput" min="0.01" max="100" step="0.01" value="10.00" class="w-[80px] text-right px-2 py-1 border border-gray-300 rounded input-focus">
+                                    <input type="number" id="weightInput" min="0.01" max="230" step="0.01" value="10.0" class="w-[80px] text-right px-2 py-1 border border-gray-300 rounded input-focus">
                                     <span class="ml-1">kg</span>
                                 </div>
                             </div>
@@ -164,7 +167,8 @@
                                 <div class="flex gap-2">
                                     <button id="preset1Btn" class="btn-preset">预设1 <span id="preset1Name">(高加成)</span></button>
                                     <button id="preset2Btn" class="btn-preset">预设2 <span id="preset2Name">(中加成)</span></button>
-                                    <button id="preset3Btn" class="btn-preset">预设3 <span id="preset3Name">(低加成)</span></button>
+                                    <button id="preset3Btn" class="btn-preset">满词条含活动天气 <span id="preset3Name"></span></button>
+                                    <button id="presetFullBtn" class="btn-preset bg-purple-100 text-purple-800 hover:bg-purple-200">满词条不含活动天气 <span id="presetFullName"></span></button>
                                     <button id="clearWeatherBtn" class="btn-preset bg-red-100 text-red-800 hover:bg-red-200">清空</button>
                                 </div>
                             </label>
@@ -175,94 +179,93 @@
                                 <div class="flex gap-2">
                                     <button id="saveToPreset1" class="btn-save-preset">保存到预设1</button>
                                     <button id="saveToPreset2" class="btn-save-preset">保存到预设2</button>
-                                    <button id="saveToPreset3" class="btn-save-preset">保存到预设3</button>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto p-2 border border-gray-200 rounded-lg">
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-颤栗" class="weather-checkbox mr-2" data-value="1">
-                                    <label for="weather-颤栗">颤栗 (+1)</label>
+                                    <label for="weather-颤栗">颤栗</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-潮湿" class="weather-checkbox mr-2" data-value="1">
-                                    <label for="weather-潮湿">潮湿 (+1)</label>
+                                    <label for="weather-潮湿">潮湿</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-覆雪" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-覆雪">覆雪 (+2)</label>
+                                    <label for="weather-覆雪">覆雪</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-迷雾" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-迷雾">迷雾 (+2)</label>
+                                    <label for="weather-迷雾">迷雾</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-灼热" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-灼热">灼热 (+2)</label>
+                                    <label for="weather-灼热">灼热</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-生机" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-生机">生机 (+2)</label>
+                                    <label for="weather-生机">生机</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-沙尘" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-沙尘">沙尘 (+2)</label>
+                                    <label for="weather-沙尘">沙尘</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-结霜" class="weather-checkbox mr-2" data-value="2">
-                                    <label for="weather-结霜">结霜 (+2)</label>
+                                    <label for="weather-结霜">结霜</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-落雷" class="weather-checkbox mr-2" data-value="3">
-                                    <label for="weather-落雷">落雷 (+3)</label>
+                                    <label for="weather-落雷">落雷</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-血月" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-血月">血月 (+5)</label>
+                                    <label for="weather-血月">血月</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-幽魂" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-幽魂">幽魂 (+5)</label>
+                                    <label for="weather-幽魂">幽魂</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-惊魂夜" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-惊魂夜">惊魂夜 (+5)</label>
+                                    <label for="weather-惊魂夜">惊魂夜</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-彩虹" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-彩虹">彩虹 (+5)</label>
+                                    <label for="weather-彩虹">彩虹</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-荧光" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-荧光">荧光 (+5)</label>
+                                    <label for="weather-荧光">荧光</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-极光" class="weather-checkbox mr-2" data-value="5">
-                                    <label for="weather-极光">极光 (+5)</label>
+                                    <label for="weather-极光">极光</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-冰冻" class="weather-checkbox mr-2" data-value="4">
-                                    <label for="weather-冰冻">冰冻 (潮湿+结霜, +4)</label>
+                                    <label for="weather-冰冻">冰冻</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-陶化" class="weather-checkbox mr-2" data-value="4">
-                                    <label for="weather-陶化">陶化 (潮湿+沙尘, +4)</label>
+                                    <label for="weather-陶化">陶化</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-瓷化" class="weather-checkbox mr-2" data-value="8">
-                                    <label for="weather-瓷化">瓷化 (陶化+灼热, +8)</label>
+                                    <label for="weather-瓷化">瓷化</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-星环" class="weather-checkbox mr-2" data-value="10">
-                                    <label for="weather-星环">星环 (+10)</label>
+                                    <label for="weather-星环">星环</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-亮晶晶" class="weather-checkbox mr-2" data-value="10">
-                                    <label for="weather-亮晶晶">亮晶晶 (+10)</label>
+                                    <label for="weather-亮晶晶">亮晶晶</label>
                                 </div>
                                 <div class="weather-item flex items-center">
                                     <input type="checkbox" id="weather-霓虹" class="weather-checkbox mr-2" data-value="18">
-                                    <label for="weather-霓虹">霓虹 (+18)</label>
+                                    <label for="weather-霓虹">霓虹</label>
                                 </div>
                             </div>
                         </div>
@@ -289,14 +292,14 @@
                                 </div>
                                 <hr class="my-2 border-green-200">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-gray-800 font-bold">最终价格:</span>
+                                    <span class="text-gray-800 font-bold">最终价格约:</span>
                                     <span id="finalPrice" class="text-2xl font-bold text-price-high">0.03万</span>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- 计算规则说明 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 hidden">
                             <h3 class="text-lg font-semibold text-green-700 mb-2 flex items-center">
                                 <i class="fa fa-info-circle mr-2"></i>价格计算规则
                             </h3>
@@ -315,10 +318,12 @@
             </div>
         </div>
         
+
+        
         <!-- 果实最大值信息 -->
         <div class="bg-white rounded-xl shadow-md p-4 card-hover mb-8">
             <h2 class="text-xl font-bold text-green-700 mb-3 flex items-center">
-                <i class="fa fa-table mr-2"></i>果实最大值单位kg
+                <i class="fa fa-table mr-2"></i>果实的最大值
             </h2>
             
             <div class="overflow-x-auto">
@@ -498,7 +503,8 @@
 
         <!-- 页脚 -->
         <footer class="mt-12 text-center text-gray-500 text-sm">
-            <p>© 2025 蛋仔疯狂农场果实计算器 | 勾选添加预设版 | 仅供游戏参考</p>
+            <p class="mb-2">© 2026 蛋仔疯狂农场果实计算器 | 版权所有 | 作者：GitHub@liulixing945</p>
+            <p>【免责声明】本计算器仅为《蛋仔派对》疯狂农场玩法的参考工具，实际数据请以游戏内为准</p>
         </footer>
     </div>
 
@@ -512,7 +518,7 @@
             '西瓜': 5000,
             '苹果': 1500,
             '香蕉': 2000,
-            '猴桃': 2150,
+            '猕猴桃': 2150,
             '蟠桃': 9000,
             '大王菊': 24875,
             '榴莲': 200,
@@ -541,23 +547,23 @@
         
         const specialMutationData = {
             '土豆': { '薯片': 1.5 },
-            '草莓': { '连体': 1.5 },
             '黄瓜': { '黄瓜蛇': 2 },
-            '向日葵': { '笑日葵': 10 },
             '西瓜': { '方形': 1.5 },
+            '南瓜': { '万圣夜': 2 },
             '苹果': { '糖葫芦': 1.5 },
             '香蕉': { '香蕉猴': 2 },
-            '猴桃': { '巨型': 1.5, '多果': 2 },
-            '蟠桃': { '双生': 1.5, '金纹': 2 },
-            '大王菊': { '重瓣': 1.5, '异色': 2 },
-            '榴莲': { '多刺': 1.5, '浓香': 2 },
-            '葡萄': { '无籽': 1.5, '串状': 2 },
-            '荔枝': { '核小': 1.5, '蜜甜': 2 },
-            '惊奇蘑': { '发光': 1.5, '巨型': 2 },
-            '仙人掌象': { '多臂': 1.5, '硬刺': 2 },
-            '松果': { '大颗': 1.5, '油亮': 2 },
+            '草莓': { '连体': 1.5 },
+            '向日葵': { '笑日葵': 10 },
+            '猕猴桃': {},
+            '蟠桃': {},
+            '大王菊': {},
+            '榴莲': {},
+            '葡萄': {},
+            '荔枝': {},
+            '惊奇蘑': {},
+            '仙人掌象': {},
+            '松果': {},
             '车厘子': {},
-            '南瓜': { '万圣夜': 2 },
             '玉米': {},
             '波斯菊': {},
             '梨': {},
@@ -578,7 +584,8 @@
         let weatherPresets = {
             preset1: ['霓虹', '星环', '亮晶晶'],
             preset2: ['血月', '彩虹', '极光'],
-            preset3: ['落雷', '灼热', '生机']
+            preset3: ['瓷化', '亮晶晶', '荧光', '落雷', '冰冻', '颤栗', '覆雪', '潮湿', '迷雾', '生机', '彩虹', '星环', '极光', '霓虹'],
+            presetFull: ['颤栗', '潮湿', '覆雪', '迷雾', '落雷', '彩虹', '荧光', '冰冻', '瓷化', '星环', '亮晶晶', '霓虹', '生机']
         };
         
         // 优化后的单位格式化函数（减少偏差）
@@ -609,15 +616,19 @@
         const preset1Btn = document.getElementById('preset1Btn');
         const preset2Btn = document.getElementById('preset2Btn');
         const preset3Btn = document.getElementById('preset3Btn');
+
+        const presetFullBtn = document.getElementById('presetFullBtn');
         const clearWeatherBtn = document.getElementById('clearWeatherBtn');
         
         const saveToPreset1 = document.getElementById('saveToPreset1');
         const saveToPreset2 = document.getElementById('saveToPreset2');
-        const saveToPreset3 = document.getElementById('saveToPreset3');
+
         
         const preset1Name = document.getElementById('preset1Name');
         const preset2Name = document.getElementById('preset2Name');
+
         const preset3Name = document.getElementById('preset3Name');
+        const presetFullName = document.getElementById('presetFullName');
         
         // 状态变量
         let selectedMutationValue = 1;
@@ -634,22 +645,23 @@
             // 重量滑块与输入框联动
             weightSlider.addEventListener('input', () => {
                 const value = parseFloat(weightSlider.value);
-                const roundedValue = Math.round(value * 100) / 100; // 确保是0.01的倍数
-                const formattedValue = roundedValue.toFixed(2);
+                const roundedValue = Math.round(value * 10) / 10; // 确保是0.1的倍数
+                const formattedValue = roundedValue.toFixed(1);
                 weightInput.value = formattedValue;
                 calculatePrice();
             });
             
             weightInput.addEventListener('input', (e) => {
                 let value = parseFloat(e.target.value);
-                if (isNaN(value)) value = 10.00;
+                if (isNaN(value)) value = 10.0;
                 if (value < 0.01) value = 0.01;
-                if (value > 100) value = 100;
-                const roundedValue = Math.round(value * 100) / 100; // 确保是0.01的倍数
-                const formattedValue = roundedValue.toFixed(2);
-                
+                if (value > 230) value = 230;
+                // 输入框可以显示2位小数，但滑块只能以0.1步长调整
+                const formattedValue = value.toFixed(2);
                 e.target.value = formattedValue;
-                weightSlider.value = formattedValue;
+                // 滑块值取最接近的0.1倍数
+                const sliderValue = Math.round(value * 10) / 10;
+                weightSlider.value = sliderValue;
                 calculatePrice();
             });
             
@@ -671,15 +683,15 @@
             });
             
             // 天气预设按钮事件
-            preset1Btn.addEventListener('click', () => applyWeatherPreset('preset1'));
-            preset2Btn.addEventListener('click', () => applyWeatherPreset('preset2'));
-            preset3Btn.addEventListener('click', () => applyWeatherPreset('preset3'));
-            clearWeatherBtn.addEventListener('click', clearAllWeather);
+        preset1Btn.addEventListener('click', () => applyWeatherPreset('preset1'));
+        preset2Btn.addEventListener('click', () => applyWeatherPreset('preset2'));
+        preset3Btn.addEventListener('click', () => applyWeatherPreset('preset3'));
+        presetFullBtn.addEventListener('click', () => applyWeatherPreset('presetFull'));
+        clearWeatherBtn.addEventListener('click', clearAllWeather);
             
             // 保存到预设按钮事件
-            saveToPreset1.addEventListener('click', () => saveCurrentWeatherToPreset('preset1'));
-            saveToPreset2.addEventListener('click', () => saveCurrentWeatherToPreset('preset2'));
-            saveToPreset3.addEventListener('click', () => saveCurrentWeatherToPreset('preset3'));
+        saveToPreset1.addEventListener('click', () => saveCurrentWeatherToPreset('preset1'));
+        saveToPreset2.addEventListener('click', () => saveCurrentWeatherToPreset('preset2'));
             
             // 初始化特殊突变选项
             updateSpecialMutations();
@@ -718,7 +730,8 @@
         function updatePresetNames() {
             preset1Name.textContent = `(${weatherPresets.preset1.join('、')})`;
             preset2Name.textContent = `(${weatherPresets.preset2.join('、')})`;
-            preset3Name.textContent = `(${weatherPresets.preset3.join('、')})`;
+            preset3Name.textContent = '';
+            presetFullName.textContent = `(${weatherPresets.presetFull.length}个)`;
         }
         
         // 应用天气预设
@@ -825,7 +838,9 @@
         }
         
         // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', init);
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
     </script>
 </body>
 </html>
