@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -28,7 +29,7 @@
             }
         }
     </script>
-    <style type="text/tailwindcss">
+    <style>
         @layer utilities {
             .text-shadow {
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
@@ -140,7 +141,9 @@
                             <div class="flex items-center">
                                 <input type="range" id="weightSlider" min="0.01" max="230" step="0.1" value="10.0" class="w-full mr-4">
                                 <div class="flex items-center">
-                                    <input type="number" id="weightInput" min="0.01" max="230" step="0.01" value="10.0" class="w-[80px] text-right px-2 py-1 border border-gray-300 rounded input-focus">
+                                    <input type="number" id="weightInt" min="0" max="230" step="1" value="10" class="w-[60px] text-right px-2 py-1 border border-gray-300 rounded-l input-focus">
+                                    <span class="px-1">.</span>
+                                    <input type="number" id="weightDec" min="0" max="99" step="1" value="0" class="w-[40px] text-right px-2 py-1 border border-gray-300 rounded-r input-focus">
                                     <span class="ml-1">kg</span>
                                 </div>
                             </div>
@@ -171,7 +174,7 @@
                     <div class="space-y-4">
                         <!-- 天气选择 -->
                         <div>
-                            <label class="block text-gray-700 mb-2 font-medium flex items-center justify-between">
+                            <div class="block text-gray-700 mb-2 font-medium flex items-center justify-between">
                                 <span>天气选择</span>
                                 <div class="flex gap-2">
                                     <button id="preset1Btn" class="btn-preset">预设1 <span id="preset1Name">(高加成)</span></button>
@@ -180,7 +183,7 @@
                                     <button id="presetFullBtn" class="btn-preset bg-purple-100 text-purple-800 hover:bg-purple-200">满词条不含活动天气 <span id="presetFullName"></span></button>
                                     <button id="clearWeatherBtn" class="btn-preset bg-red-100 text-red-800 hover:bg-red-200">清空</button>
                                 </div>
-                            </label>
+                            </div>
                             
                             <!-- 预设保存面板（勾选后保存） -->
                             <div class="bg-gray-50 p-3 rounded-lg mb-3 border border-gray-200 flex items-center justify-between">
@@ -283,7 +286,7 @@
                         <div class="bg-green-50 rounded-lg p-4 border border-green-200">
                             <h3 class="text-lg font-semibold text-green-700 mb-2">计算结果</h3>
                             <div class="space-y-2">
-                                <div class="flex justify-between">
+                                <div class="flex justify-between hidden">
                                     <span class="text-gray-600">种族值:</span>
                                     <span id="raceValue" class="font-medium">25</span>
                                 </div>
@@ -291,7 +294,7 @@
                                     <span class="text-gray-600">重量系数:</span>
                                     <span id="weightFactor" class="font-medium">10.00</span>
                                 </div>
-                                <div class="flex justify-between">
+                                <div class="flex justify-between hidden">
                                     <span class="text-gray-600">突变值:</span>
                                     <span id="mutationValue" class="font-medium">1.00</span>
                                 </div>
@@ -303,6 +306,9 @@
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-800 font-bold">最终价格约:</span>
                                     <span id="finalPrice" class="text-2xl font-bold text-price-high">0.03万</span>
+                                </div>
+                                <div class="text-right text-sm text-gray-500">
+                                    <span id="errorTip">有2百万误差</span>
                                 </div>
                             </div>
                         </div>
@@ -614,7 +620,8 @@
         // DOM元素获取
         const cropSelect = document.getElementById('cropSelect');
         const weightSlider = document.getElementById('weightSlider');
-        const weightInput = document.getElementById('weightInput');
+        const weightInt = document.getElementById('weightInt');
+        const weightDec = document.getElementById('weightDec');
         const mutationBtns = document.querySelectorAll('.mutation-btn');
         const weatherCheckboxes = document.querySelectorAll('.weather-checkbox');
         const specialMutationContainer = document.getElementById('specialMutationContainer');
@@ -658,24 +665,47 @@
             weightSlider.addEventListener('input', () => {
                 const value = parseFloat(weightSlider.value);
                 const roundedValue = Math.round(value * 10) / 10; // 确保是0.1的倍数
-                const formattedValue = roundedValue.toFixed(1);
-                weightInput.value = formattedValue;
+                const intPart = Math.floor(roundedValue);
+                const decPart = Math.round((roundedValue - intPart) * 10);
+                weightInt.value = intPart;
+                weightDec.value = decPart;
                 calculatePrice();
             });
             
-            weightInput.addEventListener('input', (e) => {
-                let value = parseFloat(e.target.value);
-                if (isNaN(value)) value = 10.0;
-                if (value < 0.01) value = 0.01;
-                if (value > 230) value = 230;
-                // 输入框可以显示2位小数，但滑块只能以0.1步长调整
-                const formattedValue = value.toFixed(2);
-                e.target.value = formattedValue;
-                // 滑块值取最接近的0.1倍数
-                const sliderValue = Math.round(value * 10) / 10;
-                weightSlider.value = sliderValue;
-                calculatePrice();
+            // 整数输入框事件
+            weightInt.addEventListener('input', () => {
+                updateWeightFromInputs();
             });
+            
+            // 小数输入框事件
+            weightDec.addEventListener('input', () => {
+                updateWeightFromInputs();
+            });
+            
+            // 从输入框更新重量值
+            function updateWeightFromInputs() {
+                let intValue = parseInt(weightInt.value);
+                let decValue = parseInt(weightDec.value);
+                
+                // 验证整数部分
+                if (isNaN(intValue) || intValue < 0) intValue = 0;
+                if (intValue > 230) intValue = 230;
+                weightInt.value = intValue;
+                
+                // 验证小数部分
+                if (isNaN(decValue) || decValue < 0) decValue = 0;
+                if (decValue > 99) decValue = 99;
+                weightDec.value = decValue;
+                
+                // 组合成总重量
+                const totalWeight = intValue + (decValue / 10);
+                
+                // 更新滑块
+                const sliderValue = Math.round(totalWeight * 10) / 10;
+                weightSlider.value = sliderValue;
+                
+                calculatePrice();
+            }
             
             // 基础突变按钮事件
             mutationBtns.forEach(btn => {
@@ -690,6 +720,18 @@
             // 天气复选框事件
             weatherCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
+                    // 瓷化和陶化互斥选择
+                    if (checkbox.id === 'weather-瓷化' && checkbox.checked) {
+                        const taohuaCheckbox = document.getElementById('weather-陶化');
+                        if (taohuaCheckbox && taohuaCheckbox.checked) {
+                            taohuaCheckbox.checked = false;
+                        }
+                    } else if (checkbox.id === 'weather-陶化' && checkbox.checked) {
+                        const cihuaCheckbox = document.getElementById('weather-瓷化');
+                        if (cihuaCheckbox && cihuaCheckbox.checked) {
+                            cihuaCheckbox.checked = false;
+                        }
+                    }
                     calculatePrice();
                 });
             });
@@ -838,6 +880,17 @@
             mutationValueEl.textContent = totalMutationValue.toFixed(2);
             weatherBonusEl.textContent = weatherBonus.toFixed(2);
             finalPriceEl.textContent = formatNumber(finalPrice);
+            
+            // 根据最终价格单位更新误差提示
+            const priceText = finalPriceEl.textContent;
+            const errorTip = document.getElementById('errorTip');
+            if (priceText.includes('亿')) {
+                errorTip.textContent = '有2千万左右误差';
+            } else if (priceText.includes('万')) {
+                errorTip.textContent = '有2百万误差';
+            } else {
+                errorTip.textContent = '有2百万误差';
+            }
             
             // 价格颜色分级
             if (finalPrice >= 1000000) {
