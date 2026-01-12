@@ -731,7 +731,34 @@
                         if (cihuaCheckbox && cihuaCheckbox.checked) {
                             cihuaCheckbox.checked = false;
                         }
+                        // 陶化和沙尘互斥选择
+                        const shachenCheckbox = document.getElementById('weather-沙尘');
+                        if (shachenCheckbox && shachenCheckbox.checked) {
+                            shachenCheckbox.checked = false;
+                        }
                     }
+                    
+                    // 陶化和沙尘互斥选择
+                    if (checkbox.id === 'weather-沙尘' && checkbox.checked) {
+                        const taohuaCheckbox = document.getElementById('weather-陶化');
+                        if (taohuaCheckbox && taohuaCheckbox.checked) {
+                            taohuaCheckbox.checked = false;
+                        }
+                    }
+                    
+                    // 冰冻和结霜互斥选择
+                    if (checkbox.id === 'weather-冰冻' && checkbox.checked) {
+                        const jieshuangCheckbox = document.getElementById('weather-结霜');
+                        if (jieshuangCheckbox && jieshuangCheckbox.checked) {
+                            jieshuangCheckbox.checked = false;
+                        }
+                    } else if (checkbox.id === 'weather-结霜' && checkbox.checked) {
+                        const bingdongCheckbox = document.getElementById('weather-冰冻');
+                        if (bingdongCheckbox && bingdongCheckbox.checked) {
+                            bingdongCheckbox.checked = false;
+                        }
+                    }
+                    
                     calculatePrice();
                 });
             });
